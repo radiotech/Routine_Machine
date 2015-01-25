@@ -1,26 +1,61 @@
+import ddf.minim.*;
+
+Minim minim;
+AudioPlayer message;
+
+int marker = 0;
+float durration;
+int times = 15;
+float time[] = new float[times];
+String words[] = new String[times];
+int change = -1;
+int repeat = -1;
+
+boolean show_routine;
+int routineIndex;
+
+int last_mill = 0;
+
+void set_routine(int a){
+  routineIndex = a;
+  show_routine = true;
+  last_mill = millis();
+}
+
 void update_routine(){
-  if(lastPoint(marker) != change){
-    change = lastPoint(marker);
-    repeat = 10;
+  
+  background(0);
+
+  noFill();
+  stroke(255);
+  strokeWeight(pad/10);
+  
+  if(last_mill+1000 <= millis()){
+    last_mill += 1000;
     
-  }
-  
-  if(repeat == 10 || repeat == 5 || repeat == 0){
-    //message = minim.loadFile("http://interactivecomputing2013.globalblogs.org/files/2013/10/boing.mp3");//change+".mp3");
-    message = minim.loadFile("http://radiotech.github.io/Morning/morning_program/data/"+change+".mp3");
+    if(lastPoint(marker) != change){
+      change = lastPoint(marker);
+      repeat = 10;
+    }
     
-    message.play();
-  }
-  if(repeat > -1){
-    repeat-=1;
-  }
-  
-  if(marker==-1){
-    frameRate(1);
-  }
-  
-  if(marker<durration*60){
-    marker++;
+    if(repeat > -1){
+      repeat-=1;
+      if(repeat == 10 || repeat == 5 || repeat == 0){
+        //message = minim.loadFile("http://radiotech.github.io/Morning/morning_program/data/"+change+".mp3");
+        //message.play();
+        //play alert message
+      }
+    }
+    
+    /*
+    if(marker==-1){
+      frameRate(30);
+    }
+    */
+    
+    if(marker<durration*60){
+      marker++;
+    }
   }
   
   line(pad,height-pad,width-pad,height-pad);
@@ -42,6 +77,7 @@ void update_routine(){
   
   textFont(font, 48);
   textAlign(LEFT);
+  text("Back",width/30+pad/4,height/10);
   if(marker%60<10){
     text("0"+marker%60,width-width/10+pad/4,height/10);
   } else {
