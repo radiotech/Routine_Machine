@@ -14,9 +14,9 @@ int repeat = -1;
 
 PFont font;
 
-String procedures[] = new String[100];
-float procedure_time[][] = new float[100][100];
-String procedure_words[][] = new String[100][100];
+String procedures[];
+float procedure_time[][];
+String procedure_words[][];
 float slider_pos;
 boolean slider_on;
 float slider_start;
@@ -48,10 +48,14 @@ void setup(){
   
   font = loadFont("Monospaced.bold-48.vlw");
   
+  load_procedures();
+  establish_menus();
+  set_menu(0);
+  
 }
   
 void draw(){
-  if(menu){
+  if(show_menu){
     update_menu();
   }
 }
@@ -72,5 +76,11 @@ void mousePressed(){
 }
 
 void mouseReleased(){
-  slider_on = false;
+  if(slider_on){
+    slider_on = false;
+    
+    if(abs(slider_click-mouseY)<3){
+      menu_click(menuIndex, floor((slider_pos+mouseY-height/5)/(height/6)));
+    }
+  }
 }
