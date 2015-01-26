@@ -45,14 +45,14 @@ void establish_menus(){
   menu[3][1] = "Developed as a personal tool and adapted for the play store";
   menu[3][2] = "Report issues to STEMGameDesignClub@gmail.com";
   menu[3][3] = "Done";
-  menu[4][0] = "Repeat 3 Times"; //load
-  menu[4][1] = "No Sound"; //load
-  menu[4][2] = "Flash Phone Light"; //load
+  menu[4][0] = "Default"; //load
+  menu[4][1] = "Default"; //load
+  menu[4][2] = "Default"; //load
   menu[4][3] = "Play";
   menu[4][4] = "Done";
   menu[5][0] = menu[4][0];
-  menu[5][1] = "Custom Sound";
-  menu[5][2] = "Record";
+  menu[5][1] = menu[4][1];
+  menu[5][2] = "Choose File";
   menu[5][3] = menu[4][2];
   menu[5][4] = "Play";
   menu[5][5] = "Done";
@@ -61,9 +61,9 @@ void establish_menus(){
   menu[6][2] = "Accent Color";
   menu[6][3] = "Done";
   menu[7][0] = "Red";
-  menu[7][1] = "Hue 0";
-  menu[7][2] = "Saturation 10";
-  menu[7][3] = "Brightness 10";
+  menu[7][1] = "Default";
+  menu[7][2] = "Default";
+  menu[7][3] = "Default";
   menu[7][4] = "Done";
 }
 
@@ -162,7 +162,17 @@ void menu_click(int a, int b){
             set_menu(1);
           break;
           case 1:
-            set_menu(4);
+            menu[4][0] = "Repeat "+alarm[0]+" Times";
+            menu[4][1] = alarm_names[0][alarm[1]];
+            menu[4][2] = alarm_names[1][alarm[2]];
+            if(alarm[1] == 3 || alarm[1] == 4){
+              menu[5][0] = menu[4][0];
+              menu[5][1] = menu[4][1];
+              menu[5][3] = menu[4][2];
+              set_menu(5);
+            } else {
+              set_menu(4);
+            }
           break;
           case 2:
             set_menu(6);
@@ -184,22 +194,40 @@ void menu_click(int a, int b){
       break;
       case 4:
         //if playing, stop it
-        menu[a][b] = "Play";
+        if(random(5)<1){
+          //stop it
+          menu[a][b] = " Play ";
+        } else {
+          menu[a][b] = "Play";
+        }
         switch(b){
           case 0:
-            //incriment repeat
-            menu[a][b] = "Repeat "+99+" Times";
+            alarm[0]++;
+            if(alarm[0]>20){
+              alarm[0] = 0;
+            }
+            menu[a][b] = "Repeat "+alarm[0]+" Times";
           break;
           case 1:
-            //change alarm sound type
-            //if(record){
+            alarm[1]++;
+            if(alarm[1]>4){
+              alarm[1] = 0;
+            }
+            menu[4][1] = alarm_names[0][alarm[1]];
+            if(alarm[1] == 3 || alarm[1] == 4){
               menu[5][0] = menu[4][0];
+              menu[5][1] = menu[4][1];
               menu[5][3] = menu[4][2];
               set_menu(5);
-            //}
+            }
           break;
           case 2:
-            menu[a][b] = "Flash Phone Light and Screen";
+            alarm[2]++;
+            if(alarm[2]>4){
+              alarm[2] = 0;
+            }
+            menu[4][2] = alarm_names[1][alarm[2]];
+            //menu[a][b] = "Flash Phone Light and Screen";
           break;
           case 3:
             if(menu[a][b] == "Play"){
@@ -212,26 +240,52 @@ void menu_click(int a, int b){
             set_menu(2);
           break;
         }
-        
+        if(menu[a][b] == " Play "){
+          menu[a][b] = "Play";
+        }
       break;
       case 5:
-        //stop recording
-        menu[a][b] = "Record";
         //if playing, stop it
-        menu[a][b] = "Play";
+        if(random(5)<1){
+          //stop it
+          menu[a][b] = " Play ";
+        } else {
+          menu[a][b] = "Play";
+        }
+        if(alarm[1] == 3){
+          //if recording, stop it
+          if(random(5)<1){
+            //stop it
+            menu[a][b] = " Record ";
+          } else {
+            menu[a][b] = "Record";
+          }
+        }
         switch(b){
           case 0:
-            //incriment repeat
-            menu[4][b] = "Repeat "+99+" Times";
+            alarm[0]++;
+            if(alarm[0]>20){
+              alarm[0] = 0;
+            }
+            menu[4][b] = "Repeat "+alarm[0]+" Times";
             menu[a][b] = menu[4][b];
           break;
           case 1:
-            //change alarm sound type
-            menu[5][0] = menu[4][0];
-            menu[5][3] = menu[4][2];
-            set_menu(4);
+            alarm[1]++;
+            if(alarm[1]>4){
+              alarm[1] = 0;
+            }
+            menu[4][1] = alarm_names[0][alarm[1]];
+            if(alarm[1] != 3 && alarm[1] != 4){
+              set_menu(4);
+            }
+            menu[a][b] = menu[4][b];
           break;
           case 2:
+            if(alarm[1] == 3){
+               menu[a][b] = "Choose File";
+            }
+            
             if(menu[a][b] == "Record"){
               menu[a][b] = "Stop Recording";
               //play audio
@@ -274,6 +328,10 @@ void menu_click(int a, int b){
             set_menu(2);
           break;
         }
+        menu[7][0] = color_names[colors[color_part]];
+        menu[7][1] = "Hue " + (hues[color_part]+1);
+        menu[7][2] = "Saturation " + (saturations[color_part]+1);
+        menu[7][3] = "Brightness " + (brightnesses[color_part]+1);
       break;
       case 7:
         switch(b){
@@ -282,33 +340,33 @@ void menu_click(int a, int b){
             if(colors[color_part] > 11){
               colors[color_part] = 0;
             }
-            menu[a][b] = color_names[colors[color_part]];
           break;
           case 1:
             hues[color_part]++;
             if(hues[color_part] >= 10){
               hues[color_part] = 0;
             }
-            menu[a][b] = "Hue " + (hues[color_part]+1);
           break;
           case 2:
             saturations[color_part]++;
             if(saturations[color_part] >= 10){
               saturations[color_part] = 0;
             }
-            menu[a][b] = "Saturations " + (saturations[color_part]+1);
           break;
           case 3:
             brightnesses[color_part]++;
             if(brightnesses[color_part] >= 10){
               brightnesses[color_part] = 0;
             }
-            menu[a][b] = "Brightness " + (brightnesses[color_part]+1);
           break;
           case 4:
             set_menu(6);
           break;
         }
+      menu[7][0] = color_names[colors[color_part]];
+      menu[7][1] = "Hue " + (hues[color_part]+1);
+      menu[7][2] = "Saturation " + (saturations[color_part]+1);
+      menu[7][3] = "Brightness " + (brightnesses[color_part]+1);
       break;
     }
   }

@@ -3,10 +3,13 @@ PFont font;
 
 int colors[] = {0,0,7};
 int hues[] = {0,0,0};
-int saturations[] = {9,9,9};
-int brightnesses[] = {9,0,5};
+int saturations[] = {0,9,9};
+int brightnesses[] = {9,0,9};
 int color_part = 0;
 String color_names[] = {"Red","Orange","Yellow","Chartreuse","Green","Spring Green","Cyan","Azure","Blue","Violet","Magenta","Rose"};
+
+int alarm[] = {3,0,0};
+String alarm_names[][] = {{"No Sound","Buzzer","Bell","Custom Recording","Custom File"},{"No Flashing","Flash Light","Flash Screen","Flash All","Flash All x3"}};
 
 void setup(){  
   size(963,513);
@@ -16,7 +19,7 @@ void setup(){
   frameRate(60);
   
   font = loadFont("Monospaced.bold-48.vlw");
-  colorMode(HSB,120,10,10);
+  colorMode(HSB,120,9,9);
   
   
   
