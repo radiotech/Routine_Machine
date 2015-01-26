@@ -5,7 +5,7 @@ AudioPlayer message;
 
 int marker = 0;
 float durration;
-int times = 15;
+
 float time[] = new float[times];
 String words[] = new String[times];
 int change = -1;
@@ -27,8 +27,8 @@ void update_routine(){
   background(0);
 
   noFill();
-  stroke(255);
-  strokeWeight(pad/10);
+  stroke(get_color(0));
+  strokeWeight(height/250);
   
   if(last_mill+1000 <= millis()){
     last_mill += 1000;
@@ -58,33 +58,24 @@ void update_routine(){
     }
   }
   
-  line(pad,height-pad,width-pad,height-pad);
-  line(pad+float(marker)/60*(width-pad*2)/durration,height-pad*.75,pad+float(marker)/60*(width-pad*2)/durration,height-pad*1.25);
-  noStroke();
-  fill(255);
   
-  for(int i = 0; i < times; i++){
-    ellipse(pad+time[i]*(width-pad*2)/durration,height-pad,pad/4,pad/4);
-  }
-  
-  if(marker<time[times-1]*60){
-    rect(pad,height-pad*2.5,(marker-time[lastPoint(marker)]*60)*(width-pad*2)/(time[lastPoint(marker)+1]*60-time[lastPoint(marker)]*60),pad/2);
-  }
   
   textFont(font, 70);
   textAlign(CENTER,CENTER);
-  text(words[lastPoint(marker)],width/2,height/2);
+  if(times > 0){
+    text(words[lastPoint(marker)],width/2,height/2);
+  }
   
   textFont(font, 48);
   textAlign(LEFT);
-  text("Back",width/30+pad/4,height/10);
+  text("Back",width/30+height/100,height/10);
   if(marker%60<10){
-    text("0"+marker%60,width-width/10+pad/4,height/10);
+    text("0"+marker%60,width-width/10+height/100,height/10);
   } else {
-    text(marker%60,width-width/10+pad/4,height/10);
+    text(marker%60,width-width/10+height/100,height/10);
   }
   textAlign(RIGHT);
-  text(floor(marker/60),width-width/10-pad/4,height/10);
+  text(floor(marker/60),width-width/10-height/100,height/10);
   textAlign(CENTER);
   text(":",width-width/10,height/10);
 }

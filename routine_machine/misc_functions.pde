@@ -7,7 +7,7 @@ void back(){
 }
 
 color get_color(int a){
-  return color(colors[a]*10+hues[a],saturations[a],brightnesses[a]);
+  return color(reds[a],greens[a],blues[a]);
 }
 
 int median(int a, int b, int c){
@@ -39,8 +39,12 @@ int lastPoint(int position){
       return i-1;
     }
   }
-  if(position/60>=time[times-1]){
-    return times-1;
+  if(times > 0){
+    if(position/60>=time[times-1]){
+      return times-1;
+    } else {
+      return 0;
+    }
   } else {
     return 0;
   }

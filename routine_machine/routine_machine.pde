@@ -1,12 +1,9 @@
-int pad = 20;
 PFont font;
 
-int colors[] = {0,0,7};
-int hues[] = {0,0,0};
-int saturations[] = {0,9,9};
-int brightnesses[] = {9,0,9};
+int reds[] = {9,0,0};
+int greens[] = {9,0,0};
+int blues[] = {9,0,9};
 int color_part = 0;
-String color_names[] = {"Red","Orange","Yellow","Chartreuse","Green","Spring Green","Cyan","Azure","Blue","Violet","Magenta","Rose"};
 
 int alarm[] = {3,0,0};
 String alarm_names[][] = {{"No Sound","Buzzer","Bell","Custom Recording","Custom File"},{"No Flashing","Flash Light","Flash Screen","Flash All","Flash All x3"}};
@@ -14,12 +11,13 @@ String alarm_names[][] = {{"No Sound","Buzzer","Bell","Custom Recording","Custom
 void setup(){  
   size(963,513);
   
+  frame.setResizable(true);
   minim = new Minim(this);
   
   frameRate(60);
   
   font = loadFont("Monospaced.bold-48.vlw");
-  colorMode(HSB,120,9,9);
+  colorMode(RGB,9,9,9);
   
   
   
@@ -33,8 +31,14 @@ void draw(){
   if(show_menu){
     update_menu();
   }
+  if(show_edit_routine){
+    update_edit_routine();
+  }
   if(show_routine){
     update_routine();
+  }
+  if(show_timeline){
+    update_timeline();
   }
 }
 
