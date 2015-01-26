@@ -79,10 +79,10 @@ void set_menu(int a){
 
 void update_menu(){
   
-  background(0);
+  background(get_color(1));
 
   noFill();
-  stroke(255);
+  stroke(get_color(0));
   strokeWeight(pad/10);
   
   if(menus[menuIndex]>4){
@@ -94,46 +94,46 @@ void update_menu(){
     slider_pos += slider_fling;
     if(slider_pos > 0){
       slider_pos = slider_pos/2;
-    } else if(slider_pos < (-(height/6+.5)*(menus[menuIndex])+(height*4/5))){
-      slider_pos = (slider_pos+((height/6+.5)*(menus[menuIndex])-(height*4/5)))/2-((height/6+.5)*(menus[menuIndex])-(height*4/5));
+    } else if(slider_pos < (-(height*4/25+.5)*(menus[menuIndex])+(height*4/5))){
+      slider_pos = (slider_pos+((height*4/25+.5)*(menus[menuIndex])-(height*4/5)))/2-((height*4/25+.5)*(menus[menuIndex])-(height*4/5));
     }
   }
   
   textAlign(CENTER,CENTER);
   float tempY;
   for(int i = 0; i < menus[menuIndex]+1; i++){
-    tempY = round(slider_pos+height/5+i*height/6);
+    tempY = round(slider_pos+height/5+i*height*4/25);
     line(3,tempY,width-4,tempY);
     if(i < menus[menuIndex]){
-      fill(255);
+      fill(get_color(0));
       textFont(font, 70);
       text(menu[menuIndex][i],width/2,tempY+height/12);
       noFill();
     }
   }
   
-  fill(25);
+  fill(get_color(2));
   noStroke();
   rect(2,2,width-5,height/5-2);
   
   noFill();
   strokeWeight(7);
-  stroke(0);
+  stroke(get_color(1));
   rect(-1,-1,width+2,height+2);
   strokeWeight(pad/10);
   
   noFill();
-  stroke(255);
+  stroke(get_color(0));
   rect(2,2,width-5,height-5);
   
   //colorMode(RGB);
-  fill(0,0,255);
+  fill(get_color(2));
   rect(2,2,width-5,height/5-2);
   //colorMode(0,255);
   
   line(3,height/5,width-4,height/5);
   
-  fill(255);
+  fill(get_color(0));
   text(menu_titles[menuIndex],width/2,height/10);
 }
 
@@ -257,14 +257,17 @@ void menu_click(int a, int b){
         switch(b){
           case 0:
             menu_titles[7] = "Text Color";
+            color_part = 0;
             set_menu(7);
           break;
           case 1:
             menu_titles[7] = "Background Color";
+            color_part = 1;
             set_menu(7);
           break;
           case 2:
             menu_titles[7] = "Accent Color";
+            color_part = 2;
             set_menu(7);
           break;
           case 3:
@@ -275,16 +278,32 @@ void menu_click(int a, int b){
       case 7:
         switch(b){
           case 0:
-            menu[a][b] = "Orange";
+            colors[color_part]++;
+            if(colors[color_part] > 11){
+              colors[color_part] = 0;
+            }
+            menu[a][b] = color_names[colors[color_part]];
           break;
           case 1:
-            menu[a][b] = "Hue 1";
+            hues[color_part]++;
+            if(hues[color_part] >= 10){
+              hues[color_part] = 0;
+            }
+            menu[a][b] = "Hue " + (hues[color_part]+1);
           break;
           case 2:
-            menu[a][b] = "Saturation 0";
+            saturations[color_part]++;
+            if(saturations[color_part] >= 10){
+              saturations[color_part] = 0;
+            }
+            menu[a][b] = "Saturations " + (saturations[color_part]+1);
           break;
           case 3:
-            menu[a][b] = "Brightness 0";
+            brightnesses[color_part]++;
+            if(brightnesses[color_part] >= 10){
+              brightnesses[color_part] = 0;
+            }
+            menu[a][b] = "Brightness " + (brightnesses[color_part]+1);
           break;
           case 4:
             set_menu(6);

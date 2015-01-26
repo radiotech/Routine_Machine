@@ -1,6 +1,13 @@
 int pad = 20;
 PFont font;
 
+int colors[] = {0,0,7};
+int hues[] = {0,0,0};
+int saturations[] = {9,9,9};
+int brightnesses[] = {9,0,5};
+int color_part = 0;
+String color_names[] = {"Red","Orange","Yellow","Chartreuse","Green","Spring Green","Cyan","Azure","Blue","Violet","Magenta","Rose"};
+
 void setup(){  
   size(963,513);
   
@@ -9,6 +16,9 @@ void setup(){
   frameRate(60);
   
   font = loadFont("Monospaced.bold-48.vlw");
+  colorMode(HSB,120,10,10);
+  
+  
   
   load_procedures();
   establish_menus();
@@ -54,7 +64,7 @@ void mouseReleased(){
     slider_on = false;
     
     if(abs(slider_click-mouseY)<3){
-      menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/(height/6)));
+      menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/(height*4/25)));
     }
   }
 }
