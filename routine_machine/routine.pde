@@ -24,11 +24,7 @@ void set_routine(int a){
 
 void update_routine(){
   
-  background(0);
-
   noFill();
-  stroke(get_color(0));
-  strokeWeight(height/250);
   
   if(last_mill+1000 <= millis()){
     last_mill += 1000;
@@ -47,18 +43,10 @@ void update_routine(){
       }
     }
     
-    /*
-    if(marker==-1){
-      frameRate(30);
-    }
-    */
-    
     if(marker<durration*60){
       marker++;
     }
   }
-  
-  
   
   textFont(font, 70);
   textAlign(CENTER,CENTER);

@@ -28,8 +28,12 @@ void setup(){
 }
   
 void draw(){
+  background(get_color(1));
   if(show_menu){
     update_menu();
+  }
+  if(show_edit_point){
+    update_edit_point();
   }
   if(show_edit_routine){
     update_edit_routine();
@@ -62,6 +66,13 @@ void mousePressed(){
       slider_on = true;
       slider_start = slider_pos;
       slider_click = mouseY;
+    }
+  }
+  
+  if(show_edit_routine){
+    if(mouseY>height-height/25*2){
+      unset_edit_routine();
+      set_edit_point(0);
     }
   }
 }

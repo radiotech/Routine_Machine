@@ -35,6 +35,6 @@ void load_procedures(){
 void add_procedure(){
   
   //words[lastPoint(marker)]
-  
+  show_menu = false;
   set_edit_routine(0);
 }
