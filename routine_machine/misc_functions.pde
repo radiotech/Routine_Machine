@@ -49,3 +49,52 @@ int lastPoint(int position){
     return 0;
   }
 }
+
+float text_scale(int a, int b, int c, String d){
+  float text_size = 100;
+    
+  if(textWidth(d)/(textAscent()+textDescent())>float(a-c*2)/(b-c)){
+    for(int i = 0; i < 3; i++){
+      textSize(text_size);
+      text_size = text_size*(a-c*2)/textWidth(d);
+    }
+  } else {
+    for(int i = 0; i < 3; i++){
+      textSize(text_size);
+      text_size = text_size*(b-c)/(textAscent()+textDescent());
+    }
+  }
+  
+  
+  return text_size;
+}
+
+String text_scale_str(int a, int b, int c, String d){
+  text_scale( a, b, c, d);
+  return d;
+}
+
+void text_group(){
+  float min_size = width;
+  for(int i = 0; i < text_group_length; i++){
+    if(text_scale(text_group_w[i],text_group_h[i],height/25,text_group[i]) < min_size){
+      min_size = text_scale(text_group_w[i],text_group_h[i],height/25,text_group[i]);
+    }
+  }
+  textSize(min_size);
+  for(int i = 0; i < text_group_length; i++){
+    text(text_group[i],text_group_x[i],text_group_y[i]);
+  }
+}
+
+int text_click(){
+  int my_return = -1;
+  for(int i = 0; i < text_group_length; i++){
+    if(abs(mouseX-text_group_x[i])<text_group_w[i]/2){
+      if(abs(mouseY-text_group_y[i])<text_group_h[i]/2){
+        my_return = i;
+      }
+    }
+  }
+  return my_return;
+}

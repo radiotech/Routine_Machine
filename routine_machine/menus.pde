@@ -137,8 +137,14 @@ void update_menu(){
   
   fill(get_color(0));
   text(menu_titles[menuIndex],width/2,height/10);
+  
+  if(valid_click == 2){
+    menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/(height*4/25)));
+    valid_click = 0;
+  }
+  
 }
-
+  
 void menu_click(int a, int b){
   if(b<menus[a] && b>=0){
     switch(a){
@@ -343,7 +349,7 @@ void menu_click(int a, int b){
         switch(b){
           case 0:
             reds[color_part]++;
-            if(reds[color_part] > 11){
+            if(reds[color_part] >= 10){
               reds[color_part] = 0;
             }
           break;

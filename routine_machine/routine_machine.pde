@@ -5,8 +5,19 @@ int greens[] = {9,0,0};
 int blues[] = {9,0,9};
 int color_part = 0;
 
+String text_group[] = new String[101];
+int text_group_x[] = new int[101];
+int text_group_y[] = new int[101];
+int text_group_w[] = new int[101];
+int text_group_h[] = new int[101];
+int text_group_length = 0;
+
 int alarm[] = {3,0,0};
 String alarm_names[][] = {{"No Sound","Buzzer","Bell","Custom Recording","Custom File"},{"No Flashing","Flash Light","Flash Screen","Flash All","Flash All x3"}};
+
+int click_x = 0;
+int click_y = 0;
+int valid_click = 0;
 
 void setup(){  
   size(963,513);
@@ -44,9 +55,26 @@ void draw(){
   if(show_timeline){
     update_timeline();
   }
+  
+  if(mousePressed){
+    if(sqrt(pow(mouseX-click_x,2)+pow(mouseY-click_y,2))>height/100){
+      valid_click = 0;
+    }
+  } else {
+    if(valid_click == 2){
+      valid_click = 0;
+    } else if(valid_click == 1){
+      valid_click = 2;
+    }
+  }
 }
 
 void mousePressed(){
+  
+  click_x = mouseX;
+  click_y = mouseY;
+  valid_click = 1;
+  
   if(show_routine){
     if(mouseX>width*.75){
       next();
@@ -80,9 +108,5 @@ void mousePressed(){
 void mouseReleased(){
   if(slider_on){
     slider_on = false;
-    
-    if(abs(slider_click-mouseY)<3){
-      menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/(height*4/25)));
-    }
   }
 }
