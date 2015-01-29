@@ -1,7 +1,11 @@
 boolean show_edit_routine = false;
 boolean show_edit_point = false;
 
+int point_mode = 0; //points/blocks
+int point_tool = 0; //select, move, strech, add
+
 void set_edit_routine(int a){
+  set_global_scale(1);
   routineIndex = a;
   show_edit_routine = true;
   show_timeline = true;
@@ -23,8 +27,9 @@ void update_edit_routine(){
   //lines
   
   line(width/2,height/5,width/2,height/5*4);
-  line(3,height/5*2,width-4,height/5*2);
-  line(3,height/5*3,width-4,height/5*3);
+  line(3,height/5+height/5*3/2,width-4,height/5+height/5*3/2);
+  //line(3,height/5*2,width-4,height/5*2);
+  //line(3,height/5*3,width-4,height/5*3);
   line(3,height/5*4,width-4,height/5*4);
   
   
@@ -33,34 +38,34 @@ void update_edit_routine(){
   text_group[0] = "Routine Name";
   text_group[1] = "Routine Alarm";
   text_group[2] = "Routine Color";
-  text_group[3] = "";
-  text_group[4] = "";
-  text_group[5] = "Back";
+  text_group[3] = "Back";
+  //text_group[4] = "";
+  //text_group[5] = "Back";
   text_group_x[0] = width/4;
   text_group_x[1] = width/4*3;
   text_group_x[2] = width/4;
   text_group_x[3] = width/4*3;
-  text_group_x[4] = width/4;
-  text_group_x[5] = width/4*3;
-  text_group_y[0] = height/10*3;
-  text_group_y[1] = height/10*3;
-  text_group_y[2] = height/10*5;
-  text_group_y[3] = height/10*5;
-  text_group_y[4] = height/10*7;
-  text_group_y[5] = height/10*7;
+  //text_group_x[4] = width/4;
+  //text_group_x[5] = width/4*3;
+  text_group_y[0] = height/5+height/5*3/4;
+  text_group_y[1] = height/5+height/5*3/4;
+  text_group_y[2] = height/5+height/5*3/4*3;
+  text_group_y[3] = height/5+height/5*3/4*3;
+  //text_group_y[4] = height/10*7;
+  //text_group_y[5] = height/10*7;
   text_group_w[0] = width/2;
   text_group_w[1] = width/2;
   text_group_w[2] = width/2;
   text_group_w[3] = width/2;
-  text_group_w[4] = width/2;
-  text_group_w[5] = width/2;
+  //text_group_w[4] = width/2;
+  //text_group_w[5] = width/2;
   text_group_h[0] = height/5;
   text_group_h[1] = height/5;
   text_group_h[2] = height/5;
   text_group_h[3] = height/5;
-  text_group_h[4] = height/5;
-  text_group_h[5] = height/5;
-  text_group_length = 6;
+  //text_group_h[4] = height/5;
+  //text_group_h[5] = height/5;
+  text_group_length = 4;
   
   text_group();
   
@@ -77,22 +82,18 @@ void update_edit_routine(){
         //alarm
       break;
       case 2:
-        //color
+        unset_edit_routine();
+        set_menu(6);
       break;
       case 3:
-        //blank button
-      break;
-      case 4:
-        //blank button
-      break;
-      case 5:
+        set_global_scale(0);
         unset_edit_routine();
         set_menu(2);
       break;
     }
   }
   
-  text(text_scale_str(width,int((height/5-height/25*1.5)),height/25,"Edit Events"),width/2,height/5*4+(height/5-height/25*1.5)/2);
+  text(text_scale_str(width,int((height/5-height/25*1.5)),height/25*2,"Edit Events"),width/2,height/5*4+(height/5-height/25*1.5)/2);
   
   if(valid_click == 2){
     if(mouseY>height/5*4){
@@ -122,11 +123,13 @@ void update_edit_routine(){
   //line(3,height-height/25*2,width-4,height-height/25*2);
   
   fill(get_color(0));
-  text("Edit "+"New Routine",width/2,height/10);
+  text(text_scale_str(width,height/5,height/25,"Edit "+"New Routine"),width/2,height/10);
 }
 
 void set_edit_point(int a){
   //routineIndex = a; point index
+  set_global_scale(2);
+  pointIndex = a;
   show_edit_point = true;
   show_timeline = true;
   show_text = true;
@@ -134,12 +137,18 @@ void set_edit_point(int a){
 
 void unset_edit_point(int a){
   //routineIndex = a; point index
+  set_global_scale(1);
   show_edit_point = false;
   show_timeline = false;
   show_text = false;
 }
 
 void update_edit_point(){
+  
+  fill(get_color(2));
+  noStroke();
+  
+  rect(width/4*point_tool,height/5,width/4,(height/2-height/5)/2+1);
   
   noFill();
   stroke(get_color(0));
@@ -158,15 +167,21 @@ void update_edit_point(){
   line(width/4,height/5,width/4,height/2);
   line(width/4*3,height/5,width/4*3,height/2);
   
+  
+  
   fill(get_color(0));
   
-  text_group[0] = "Blocks/Points";
+  text_group[0] = "Select";
   text_group[1] = "Move";
   text_group[2] = "Strech";
-  text_group[3] = "Delete";
-  text_group[4] = "Add";
-  text_group[5] = "Edit";
-  text_group[6] = "";
+  text_group[3] = "Add";
+  text_group[4] = "Edit";
+  text_group[5] = "Delete";
+  if(point_mode == 0){
+    text_group[6] = "Points";
+  } else {
+    text_group[6] = "Blocks";
+  }
   text_group[7] = "Back";
   text_group_x[0] = width/8;
   text_group_x[1] = width/8*3;
@@ -211,16 +226,16 @@ void update_edit_point(){
         valid_click = 2;
       break;
       case 0:
-        println("1");
+        point_tool = 0;
       break;
       case 1:
-        println("2");
+        point_tool = 1;
       break;
       case 2:
-        println("3");
+        point_tool = 2;
       break;
       case 3:
-        println("4");
+        point_tool = 3;
       break;
       case 4:
         println("5");
@@ -229,10 +244,13 @@ void update_edit_point(){
         println("6");
       break;
       case 6:
-        println("7");
+        if(point_mode == 0){
+          point_mode = 1;
+        } else {
+          point_mode = 0;
+        }
       break;
       case 7:
-        println("8");
         unset_edit_point(0);
         set_edit_routine(routineIndex);
       break;

@@ -7,7 +7,7 @@ void back(){
 }
 
 color get_color(int a){
-  return color(reds[a],greens[a],blues[a]);
+  return color(reds[routineIndex][pointIndex][a],greens[routineIndex][pointIndex][a],blues[routineIndex][pointIndex][a]);
 }
 
 int median(int a, int b, int c){
@@ -47,6 +47,17 @@ int lastPoint(int position){
     }
   } else {
     return 0;
+  }
+}
+
+void set_global_scale(int a){
+  global_scale = a;
+  if(a == 0){
+    routineIndex = 100;
+    pointIndex = 100;
+  }
+  if(a == 1){
+    pointIndex = 100;
   }
 }
 

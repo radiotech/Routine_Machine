@@ -1,7 +1,7 @@
 //import ddf.minim.*;
 
-Minim minim;
-AudioPlayer message;
+//Minim minim;
+//AudioPlayer message;
 
 int marker = 0;
 float durration;
@@ -12,11 +12,11 @@ int change = -1;
 int repeat = -1;
 
 boolean show_routine;
-int routineIndex;
 
 int last_mill = 0;
 
 void set_routine(int a){
+  global_scale = 1;
   routineIndex = a;
   show_routine = true;
   last_mill = millis();

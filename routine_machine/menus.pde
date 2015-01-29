@@ -108,11 +108,24 @@ void update_menu(){
     line(3,tempY,width-4,tempY);
     if(i < menus[menuIndex]){
       fill(get_color(0));
-      textFont(font, 70);
-      text(menu[menuIndex][i],width/2,tempY+height/12);
+      textFont(font, 200);
+      //text(,,);
+      
+      text_group[i] = menu[menuIndex][i];
+      text_group_x[i] = width/2;
+      text_group_y[i] = int(tempY+height/12);
+      text_group_w[i] = width;
+      text_group_h[i] = height/6;
+      text_group_length = i+1;
+
       noFill();
     }
   }
+  
+
+  
+  text_group();
+  
   
   fill(get_color(2));
   noStroke();
@@ -136,7 +149,7 @@ void update_menu(){
   line(3,height/5,width-4,height/5);
   
   fill(get_color(0));
-  text(menu_titles[menuIndex],width/2,height/10);
+  text(text_scale_str(width,height/5,height/25,menu_titles[menuIndex]),width/2,height/10);
   
   if(valid_click == 2){
     menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/(height*4/25)));
@@ -338,40 +351,45 @@ void menu_click(int a, int b){
             set_menu(7);
           break;
           case 3:
-            set_menu(2);
+            if(global_scale == 0){
+              set_menu(2);
+            } else if(global_scale == 1){
+              show_menu = false;
+              set_edit_routine(routineIndex);
+            }
           break;
         }
-        menu[7][0] = "Red " + (reds[color_part]+1);
-        menu[7][1] = "Green " + (greens[color_part]+1);
-        menu[7][2] = "Blue " + (blues[color_part]+1);
+        menu[7][0] = "Red " + (reds[routineIndex][pointIndex][color_part]+1);
+        menu[7][1] = "Green " + (greens[routineIndex][pointIndex][color_part]+1);
+        menu[7][2] = "Blue " + (blues[routineIndex][pointIndex][color_part]+1);
       break;
       case 7:
         switch(b){
           case 0:
-            reds[color_part]++;
-            if(reds[color_part] >= 10){
-              reds[color_part] = 0;
+            reds[routineIndex][pointIndex][color_part]++;
+            if(reds[routineIndex][pointIndex][color_part] >= 10){
+              reds[routineIndex][pointIndex][color_part] = 0;
             }
           break;
           case 1:
-            greens[color_part]++;
-            if(greens[color_part] >= 10){
-              greens[color_part] = 0;
+            greens[routineIndex][pointIndex][color_part]++;
+            if(greens[routineIndex][pointIndex][color_part] >= 10){
+              greens[routineIndex][pointIndex][color_part] = 0;
             }
           break;
           case 2:
-            blues[color_part]++;
-            if(blues[color_part] >= 10){
-              blues[color_part] = 0;
+            blues[routineIndex][pointIndex][color_part]++;
+            if(blues[routineIndex][pointIndex][color_part] >= 10){
+              blues[routineIndex][pointIndex][color_part] = 0;
             }
           break;
           case 3:
             set_menu(6);
           break;
         }
-      menu[7][0] = "Red " + (reds[color_part]+1);
-      menu[7][1] = "Green " + (greens[color_part]+1);
-      menu[7][2] = "Blue " + (blues[color_part]+1);
+      menu[7][0] = "Red " + (reds[routineIndex][pointIndex][color_part]+1);
+      menu[7][1] = "Green " + (greens[routineIndex][pointIndex][color_part]+1);
+      menu[7][2] = "Blue " + (blues[routineIndex][pointIndex][color_part]+1);
       break;
     }
   }
