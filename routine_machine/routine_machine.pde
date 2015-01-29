@@ -23,7 +23,7 @@ void setup(){
   size(963,513);
   
   frame.setResizable(true);
-  minim = new Minim(this);
+  //minim = new Minim(this);
   
   frameRate(60);
   
@@ -97,12 +97,6 @@ void mousePressed(){
     }
   }
   
-  if(show_edit_routine){
-    if(mouseY>height-height/25*2){
-      unset_edit_routine();
-      set_edit_point(0);
-    }
-  }
 }
 
 void mouseReleased(){

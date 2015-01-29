@@ -10,7 +10,7 @@ void set_edit_routine(int a){
 
 void unset_edit_routine(){
   show_edit_routine = false;
-  show_timeline = true;
+  show_timeline = false;
 }
 
 void update_edit_routine(){
@@ -30,11 +30,11 @@ void update_edit_routine(){
   
   fill(get_color(0));
   
-  text_group[0] = "1";
-  text_group[1] = "2";
-  text_group[2] = "3";
-  text_group[3] = "4";
-  text_group[4] = "5";
+  text_group[0] = "Routine Name";
+  text_group[1] = "Routine Alarm";
+  text_group[2] = "Routine Color";
+  text_group[3] = "";
+  text_group[4] = "";
   text_group[5] = "Back";
   text_group_x[0] = width/4;
   text_group_x[1] = width/4*3;
@@ -42,24 +42,24 @@ void update_edit_routine(){
   text_group_x[3] = width/4*3;
   text_group_x[4] = width/4;
   text_group_x[5] = width/4*3;
-  text_group_y[0] = height/5+(height-height/5-height/2)/4;
-  text_group_y[1] = height/5+(height-height/5-height/2)/4;
-  text_group_y[2] = height/5+(height-height/5-height/2)/4;
-  text_group_y[3] = height/5+(height-height/5-height/2)/4;
-  text_group_y[4] = height/5+(height-height/5-height/2)/4*3;
-  text_group_y[5] = height/5+(height-height/5-height/2)/4*3;
+  text_group_y[0] = height/10*3;
+  text_group_y[1] = height/10*3;
+  text_group_y[2] = height/10*5;
+  text_group_y[3] = height/10*5;
+  text_group_y[4] = height/10*7;
+  text_group_y[5] = height/10*7;
   text_group_w[0] = width/2;
   text_group_w[1] = width/2;
   text_group_w[2] = width/2;
   text_group_w[3] = width/2;
   text_group_w[4] = width/2;
   text_group_w[5] = width/2;
-  text_group_h[0] = (height-height/5-height/2)/2;
-  text_group_h[1] = (height-height/5-height/2)/2;
-  text_group_h[2] = (height-height/5-height/2)/2;
-  text_group_h[3] = (height-height/5-height/2)/2;
-  text_group_h[4] = (height-height/5-height/2)/2;
-  text_group_h[5] = (height-height/5-height/2)/2;
+  text_group_h[0] = height/5;
+  text_group_h[1] = height/5;
+  text_group_h[2] = height/5;
+  text_group_h[3] = height/5;
+  text_group_h[4] = height/5;
+  text_group_h[5] = height/5;
   text_group_length = 6;
   
   text_group();
@@ -71,29 +71,35 @@ void update_edit_routine(){
         valid_click = 2;
       break;
       case 0:
-        println("1");
+        //names
       break;
       case 1:
-        println("2");
+        //alarm
       break;
       case 2:
-        println("3");
+        //color
       break;
       case 3:
-        println("4");
+        //blank button
       break;
       case 4:
-        println("5");
+        //blank button
       break;
       case 5:
-        println("8");
         unset_edit_routine();
         set_menu(2);
       break;
     }
   }
   
+  text(text_scale_str(width,int((height/5-height/25*1.5)),height/25,"Edit Events"),width/2,height/5*4+(height/5-height/25*1.5)/2);
   
+  if(valid_click == 2){
+    if(mouseY>height/5*4){
+      unset_edit_routine();
+      set_edit_point(0);
+    }
+  }
   
   fill(get_color(2));
   noStroke();
