@@ -11,6 +11,7 @@ float slider_click;
 float slider_fling;
 
 int procedure_count = 0;
+float button_height;
 
 void establish_menus(){
   
@@ -22,22 +23,18 @@ void establish_menus(){
   menu_titles[5] = "Alarms";
   menu_titles[6] = "Colors";
   menu_titles[7] = "Choose Color";
+  menu_titles[8] = "Edit Point";
+  menu_titles[9] = "Edit Time";
   
-  menus[0] = procedure_count+1;
-  menus[1] = procedure_count+1;
   menus[2] = 6;
   menus[3] = 4;
   menus[4] = 5;
   menus[5] = 6;
   menus[6] = 4;
   menus[7] = 4;
+  menus[8] = 5;
+  menus[9] = 7;
   
-  for(int i = 0; i < menus[0]-1; i++){
-    menu[0][i] = procedures[i];
-    menu[1][i] = procedures[i];
-  }
-  menu[0][menus[0]-1] = "Settings";
-  menu[1][menus[1]-1] = "Done";
   menu[2][0] = "Add Routine";
   menu[2][1] = "Edit Routines";
   menu[2][2] = "Default Alarm";
@@ -67,9 +64,40 @@ void establish_menus(){
   menu[7][1] = "Default";
   menu[7][2] = "Default";
   menu[7][3] = "Done";
+  menu[8][0] = "Event Title";
+  menu[8][1] = "Event Alarm";
+  menu[8][2] = "Event Color";
+  menu[8][3] = "Edit Time";
+  menu[8][4] = "Done";
+  menu[9][0] = "Time +10 Min";
+  menu[9][1] = "Time +1 Min";
+  menu[9][2] = "Time +.10 Min";
+  menu[9][3] = "Time -.10 Min";
+  menu[9][4] = "Time -1 Min";
+  menu[9][5] = "Time -10 Min";
+  menu[9][6] = "Back";
 }
 
 void set_menu(int a){
+  
+  if(a <= 1){
+    menus[0] = routines+1;
+    menus[1] = routines+1;
+    for(int i = 0; i < menus[0]-1; i++){
+      menu[0][i] = procedures[i];
+      menu[1][i] = procedures[i];
+    }
+    menu[0][menus[0]-1] = "Settings";
+    menu[1][menus[1]-1] = "Done";
+  }
+  
+  if(a == 8){
+    menu[8][3] = "Edit Time ["+procedure_time[routineIndex][pointIndex]+"0 Min]";
+  }
+  if(a == 9){
+    menu_titles[9] = "Edit Time ["+procedure_time[routineIndex][pointIndex]+"0 Min]";
+  }
+  
   if(menuIndex != a){
     menuIndex = a;
     slider_pos = 0;
@@ -85,26 +113,29 @@ void update_menu(){
 
   noFill();
   stroke(get_color(0));
-  strokeWeight(height/250);
+  strokeWeight(line);
   
-  if(menus[menuIndex]>4){
+  if(menus[menuIndex]>5){
+    button_height = float(height)/27*4;
     if(slider_on){
       slider_fling = (slider_start+mouseY-slider_click) - slider_pos;
     } else {
-      slider_fling /= 1.1;
+      slider_fling /= 1.5;
     }
     slider_pos += slider_fling;
     if(slider_pos > 0){
       slider_pos = slider_pos/2;
-    } else if(slider_pos < (-(height*4/25+.5)*(menus[menuIndex])+(height*4/5))){
-      slider_pos = (slider_pos+((height*4/25+.5)*(menus[menuIndex])-(height*4/5)))/2-((height*4/25+.5)*(menus[menuIndex])-(height*4/5));
+    } else if(slider_pos < (-(button_height)*(menus[menuIndex])+float((height*4/5)))){
+      slider_pos = (slider_pos+((button_height)*(menus[menuIndex])-float((height*4/5))))/2-((button_height)*(menus[menuIndex])-float((height*4/5)));
     }
+  } else {
+    button_height = float(height)/25*4;
   }
   
   textAlign(CENTER,CENTER);
   float tempY;
   for(int i = 0; i < menus[menuIndex]+1; i++){
-    tempY = round(slider_pos+height/5+i*height*4/25);
+    tempY = round(slider_pos+height/5+i*button_height);
     line(3,tempY,width-4,tempY);
     if(i < menus[menuIndex]){
       fill(get_color(0));
@@ -113,9 +144,9 @@ void update_menu(){
       
       text_group[i] = menu[menuIndex][i];
       text_group_x[i] = width/2;
-      text_group_y[i] = int(tempY+height/12);
+      text_group_y[i] = round(tempY+button_height/2);
       text_group_w[i] = width;
-      text_group_h[i] = height/6;
+      text_group_h[i] = round(button_height);
       text_group_length = i+1;
 
       noFill();
@@ -132,10 +163,10 @@ void update_menu(){
   rect(2,2,width-5,height/5-2);
   
   noFill();
-  strokeWeight(7);
+  strokeWeight(height/50);
   stroke(get_color(1));
   rect(-1,-1,width+2,height+2);
-  strokeWeight(height/250);
+  strokeWeight(line);
   
   noFill();
   stroke(get_color(0));
@@ -152,7 +183,7 @@ void update_menu(){
   text(text_scale_str(width,height/5,height/25,menu_titles[menuIndex]),width/2,height/10);
   
   if(valid_click == 2){
-    menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/(height*4/25)));
+    menu_click(menuIndex, floor((-slider_pos+mouseY-height/5)/button_height));
     valid_click = 0;
   }
   
@@ -172,7 +203,7 @@ void menu_click(int a, int b){
       break;
       case 1:
         if(b<menus[0]-1){
-          //load and start routine
+          edit_procedure(b);
         } else {
           set_menu(2);
         }
@@ -181,8 +212,6 @@ void menu_click(int a, int b){
         switch(b){
           case 0:
             add_procedure();
-            
-            //set_menu(1); Add routine and edit that routine
           break;
           case 1:
             set_menu(1);
@@ -390,6 +419,70 @@ void menu_click(int a, int b){
       menu[7][0] = "Red " + (reds[routineIndex][pointIndex][color_part]+1);
       menu[7][1] = "Green " + (greens[routineIndex][pointIndex][color_part]+1);
       menu[7][2] = "Blue " + (blues[routineIndex][pointIndex][color_part]+1);
+      break;
+      case 8:
+        switch(b){
+          case 0:
+            //re-name point
+          break;
+          case 1:
+            set_menu(4);
+          break;
+          case 2:
+            set_menu(6);
+          break;
+          case 3:
+            set_menu(9);
+          break;
+          case 4:
+            show_menu = false;
+            set_edit_point(pointIndex);
+          break;
+        }
+      break;
+      case 9:
+        switch(b){
+          case 0:
+            procedure_time[routineIndex][pointIndex]+=10;
+            set_menu(9);
+          break;
+          case 1:
+            procedure_time[routineIndex][pointIndex]+=1;
+            set_menu(9);
+          break;
+          case 2:
+            procedure_time[routineIndex][pointIndex]=float(round((procedure_time[routineIndex][pointIndex]+.1)*10))/10;
+            
+            set_menu(9);
+          break;
+          case 3:
+            procedure_time[routineIndex][pointIndex]=float(round((procedure_time[routineIndex][pointIndex]-.1)*10))/10;
+            
+            set_menu(9);
+          break;
+          case 4:
+            procedure_time[routineIndex][pointIndex]-=1;
+            if(procedure_time[routineIndex][pointIndex] < 0){
+              procedure_time[routineIndex][pointIndex] = 0;
+            }
+            set_menu(9);
+          break;
+          case 5:
+            procedure_time[routineIndex][pointIndex]-=10;
+            if(procedure_time[routineIndex][pointIndex] < 0){
+              procedure_time[routineIndex][pointIndex] = 0;
+            }
+            set_menu(9);
+          break;
+          case 6:
+            set_menu(8);
+          break;
+        }
+        procedure_time[routineIndex][pointIndex]=float(round((procedure_time[routineIndex][pointIndex])*10))/10;
+        if(procedure_time[routineIndex][pointIndex] < 0){
+          procedure_time[routineIndex][pointIndex] = 0;
+        }
+        
       break;
     }
   }

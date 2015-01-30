@@ -1,4 +1,5 @@
 PFont font;
+int line;
 
 int reds[][][] = new int[101][101][3];//{9,0,0};
 int greens[][][] = new int[101][101][3];//{9,0,0};
@@ -23,6 +24,9 @@ int global_scale = 0;
 int routineIndex;
 int pointIndex;
 
+int routines = 0;
+int points[] = new int[100];
+
 void setup(){  
   
   //size(displayWidth, displayHeight);
@@ -44,6 +48,10 @@ void setup(){
     }
   }
   
+  for(int i = 0; i < points.length; i++){
+    points[i] = 0;
+  }
+  
   frame.setResizable(true);
   //minim = new Minim(this);
   
@@ -62,11 +70,9 @@ void setup(){
 
 void draw(){
   background(get_color(1));
+  line = floor(float(height)/250)+1;
   if(show_menu){
     update_menu();
-  }
-  if(show_edit_point){
-    update_edit_point();
   }
   if(show_edit_routine){
     update_edit_routine();
@@ -77,9 +83,12 @@ void draw(){
   if(show_timeline){
     update_timeline();
   }
+  if(show_edit_point){
+    update_edit_point();
+  }
   
   if(mousePressed){
-    if(sqrt(pow(mouseX-click_x,2)+pow(mouseY-click_y,2))>height/100){
+    if(sqrt(pow(mouseX-click_x,2)+pow(mouseY-click_y,2))>height/40){
       valid_click = 0;
     }
   } else {

@@ -10,6 +10,41 @@ color get_color(int a){
   return color(reds[routineIndex][pointIndex][a],greens[routineIndex][pointIndex][a],blues[routineIndex][pointIndex][a]);
 }
 
+void pad_duration(int a, boolean b){
+  if(points[routineIndex] > 0){
+    if(b){
+      duration = floor(procedure_time[routineIndex][points[routineIndex]-1]+a);
+    } else {
+      duration = max(floor(procedure_time[routineIndex][points[routineIndex]-1]+a),duration);
+    }
+  } else {
+    if(b){
+      duration = a;
+    } else {
+      duration = max(a,duration);
+    }
+  }
+}
+
+void order_points(){
+  float temp_procedure_time[] = new float[100];
+  String temp_procedure_words[] = new String[100];
+  int k = 0;
+  
+  for(int i = 0; i < duration*10; i++){
+    for(int j = 0; j < points[routineIndex]; j++){
+      if(round(procedure_time[routineIndex][j]*10) == i){
+        temp_procedure_time[k] = procedure_time[routineIndex][j];
+        temp_procedure_words[k] = procedure_words[routineIndex][j];
+        k++;
+      }
+    }
+  }
+  
+  arrayCopy(temp_procedure_time,procedure_time[routineIndex]);
+  arrayCopy(temp_procedure_words,procedure_words[routineIndex]);
+}
+
 int median(int a, int b, int c){
   if(a>=b && a>=c){
     if(b>=c){

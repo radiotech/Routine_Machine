@@ -3,8 +3,9 @@
 //Minim minim;
 //AudioPlayer message;
 
+int duration = 10;
+    
 int marker = 0;
-float durration;
 
 float time[] = new float[times];
 String words[] = new String[times];
@@ -20,6 +21,7 @@ void set_routine(int a){
   routineIndex = a;
   show_routine = true;
   last_mill = millis();
+  
 }
 
 void update_routine(){
@@ -43,7 +45,7 @@ void update_routine(){
       }
     }
     
-    if(marker<durration*60){
+    if(marker<duration*60){
       marker++;
     }
   }

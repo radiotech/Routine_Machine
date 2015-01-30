@@ -21,7 +21,7 @@ void update_edit_routine(){
   
   noFill();
   stroke(get_color(0));
-  strokeWeight(height/250);
+  strokeWeight(line);
   textAlign(CENTER,CENTER);
   
   //lines
@@ -95,22 +95,15 @@ void update_edit_routine(){
   
   text(text_scale_str(width,int((height/5-height/25*1.5)),height/25*2,"Edit Events"),width/2,height/5*4+(height/5-height/25*1.5)/2);
   
-  if(valid_click == 2){
-    if(mouseY>height/5*4){
-      unset_edit_routine();
-      set_edit_point(0);
-    }
-  }
-  
   fill(get_color(2));
   noStroke();
   rect(2,2,width-5,height/5-2);
   
   noFill();
-  strokeWeight(7);
+  strokeWeight(height/50);
   stroke(get_color(1));
   rect(-1,-1,width+2,height+2);
-  strokeWeight(height/250);
+  strokeWeight(line);
   
   noFill();
   stroke(get_color(0));
@@ -123,7 +116,14 @@ void update_edit_routine(){
   //line(3,height-height/25*2,width-4,height-height/25*2);
   
   fill(get_color(0));
-  text(text_scale_str(width,height/5,height/25,"Edit "+"New Routine"),width/2,height/10);
+  text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]),width/2,height/10);
+  
+  if(valid_click == 2){
+    if(mouseY>height/5*4){
+      unset_edit_routine();
+      set_edit_point(0);
+    }
+  }
 }
 
 void set_edit_point(int a){
@@ -133,11 +133,16 @@ void set_edit_point(int a){
   show_edit_point = true;
   show_timeline = true;
   show_text = true;
+  
+  if(points[routineIndex] > 0){
+    pad_duration(10, false);
+  } else {
+    duration = 60;
+  }
 }
 
-void unset_edit_point(int a){
+void unset_edit_point(){
   //routineIndex = a; point index
-  set_global_scale(1);
   show_edit_point = false;
   show_timeline = false;
   show_text = false;
@@ -152,13 +157,13 @@ void update_edit_point(){
   
   noFill();
   stroke(get_color(0));
-  strokeWeight(height/250);
+  strokeWeight(line);
   textAlign(CENTER,CENTER);
   
-  strokeWeight(height/250/10);
+  strokeWeight(ceil(line/2)-1);
   line(3,height-height/6,width-4,height-height/6);
   line(3,height-height/6*2,width-4,height-height/6*2);
-  strokeWeight(height/250);
+  strokeWeight(line);
   line(3,height-height/6*3,width-4,height-height/6*3);
   fill(5);
   line(3,height/5+(height-height/5-height/2)/2,width-4,height/5+(height-height/5-height/2)/2);
@@ -251,9 +256,30 @@ void update_edit_point(){
         }
       break;
       case 7:
-        unset_edit_point(0);
+        
+        unset_edit_point();
         set_edit_routine(routineIndex);
       break;
+    }
+    if(valid_click == 2){
+      if(mouseY>height/2){
+        switch(point_tool){
+          case 0:
+          
+          break;
+          case 1:
+          
+          break;
+          case 2:
+          
+          break;
+          case 3:
+          add_point(bigline_to_time(mouseX,mouseY));
+          unset_edit_point();
+          set_menu(8);
+          break;
+        }
+      }
     }
   }
 
@@ -272,10 +298,10 @@ void update_edit_point(){
   rect(2,2,width-5,height/5-2);
   
   noFill();
-  strokeWeight(7);
+  strokeWeight(height/50);
   stroke(get_color(1));
   rect(-1,-1,width+2,height+2);
-  strokeWeight(height/250);
+  strokeWeight(line);
   
   noFill();
   stroke(get_color(0));
@@ -287,5 +313,5 @@ void update_edit_point(){
   line(3,height/5,width-4,height/5);
   
   fill(get_color(0));
-  text(text_scale_str(width,height/5,height/25,"Edit "+"New Routine"+" Points"),width/2,height/10);
+  text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]+" Points"),width/2,height/10);
 }
