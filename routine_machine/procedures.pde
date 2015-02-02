@@ -28,9 +28,9 @@ void add_point(float a){
   procedure_time[routineIndex][points[routineIndex]-1] = a;
   procedure_words[routineIndex][points[routineIndex]-1] = "New Event"; //make name change automatic
   
-  order_points();
-  
-  edit_point(points[routineIndex]-1);
+  pointIndex = points[routineIndex]-1;
+  trim_points();
+  edit_point(pointIndex);
 }
 
 void edit_point(int a){

@@ -32,7 +32,7 @@ void update_timeline(){
         }
       }
       
-      text(text_scale_str(width/10,int((height/25)*1.5),(height/100),str(i)),temp_x,temp_y+(height/25)*1.5/2);
+      text(text_scale_str(width/10,int((height/25)*1.5),(height/100),str(i)),median(round(temp_x),round(textWidth("999")/2),round(width-textWidth("999")/2)),temp_y+(height/25)*1.5/2);
     }
     
     float[][] tempPos = new float[3][2]; 
@@ -48,9 +48,25 @@ void update_timeline(){
       if(i == 0){
         tempPos[1] = time_to_bigline(procedure_time[routineIndex][i]);
       }
-      int tempW = 100;
       
-      text(text_scale_str(tempW,int((height/25)*1.5),(height/100),procedure_words[routineIndex][i]+i),tempPos[1][0],tempPos[1][1]-(height/6-(height/25))/2);
+      //stroke(5);
+      //strokeWeight(4);
+      float minWidth = width;
+      if(tempPos[2][1] == tempPos[1][1]){
+        minWidth = abs(tempPos[2][0] - tempPos[1][0])/2;
+      }
+      if(tempPos[0][1] == tempPos[1][1]){
+        if(abs(tempPos[0][0] - tempPos[1][0])/2 < minWidth){
+          minWidth = abs(tempPos[0][0] - tempPos[1][0])/2;
+        }
+      }
+      //line(tempPos[1][0]-minWidth,tempPos[1][1]+10,tempPos[1][0]+minWidth,tempPos[1][1]+10);
+      
+      fill(get_color(0));
+      if(pointIndex == i){
+        fill(get_color(2));
+      }
+      text(text_scale_str(floor(minWidth)*2,int((height/25)*1.5),(height/100),procedure_words[routineIndex][i]+i),tempPos[1][0],tempPos[1][1]-(height/6-(height/25))/2);
       tempPos[2] = tempPos[1];
       tempPos[1] = tempPos[0];
     }

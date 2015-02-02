@@ -30,7 +30,7 @@ void establish_menus(){
   menus[3] = 4;
   menus[4] = 5;
   menus[5] = 6;
-  menus[6] = 4;
+  menus[6] = 5;
   menus[7] = 4;
   menus[8] = 5;
   menus[9] = 7;
@@ -59,7 +59,8 @@ void establish_menus(){
   menu[6][0] = "Text Color";
   menu[6][1] = "Background Color";
   menu[6][2] = "Accent Color";
-  menu[6][3] = "Done";
+  menu[6][3] = "Restore Default";
+  menu[6][4] = "Done";
   menu[7][0] = "Red";
   menu[7][1] = "Default";
   menu[7][2] = "Default";
@@ -70,12 +71,12 @@ void establish_menus(){
   menu[8][3] = "Edit Time";
   menu[8][4] = "Done";
   menu[9][0] = "Time +10 Min";
-  menu[9][1] = "Time +1 Min";
-  menu[9][2] = "Time +.10 Min";
-  menu[9][3] = "Time -.10 Min";
-  menu[9][4] = "Time -1 Min";
-  menu[9][5] = "Time -10 Min";
-  menu[9][6] = "Back";
+  menu[9][1] = "Time -10 Min";
+  menu[9][2] = "Time +1 Min";
+  menu[9][3] = "Time -1 Min";
+  menu[9][4] = "Time +6 Sec";
+  menu[9][5] = "Time -6 Sec";
+  menu[9][6] = "Done";
 }
 
 void set_menu(int a){
@@ -91,6 +92,9 @@ void set_menu(int a){
     menu[1][menus[1]-1] = "Done";
   }
   
+  if(a == 7){
+    reds[routineIndex][pointIndex][3] = 1;
+  }
   if(a == 8){
     menu[8][3] = "Edit Time ["+procedure_time[routineIndex][pointIndex]+"0 Min]";
   }
@@ -380,11 +384,27 @@ void menu_click(int a, int b){
             set_menu(7);
           break;
           case 3:
+            
+            if(global_scale == 0){
+              
+              set_menu(2);
+            } else if(global_scale == 1){
+              reds[routineIndex][100][3] = 0;
+              show_menu = false;
+              set_edit_routine(routineIndex);
+            } else {
+              reds[routineIndex][pointIndex][3] = 0;
+              set_menu(8);
+            }
+          break;
+          case 4:
             if(global_scale == 0){
               set_menu(2);
             } else if(global_scale == 1){
               show_menu = false;
               set_edit_routine(routineIndex);
+            } else {
+              set_menu(8);
             }
           break;
         }

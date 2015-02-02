@@ -7,7 +7,15 @@ void back(){
 }
 
 color get_color(int a){
-  return color(reds[routineIndex][pointIndex][a],greens[routineIndex][pointIndex][a],blues[routineIndex][pointIndex][a]);
+  if(reds[routineIndex][pointIndex][3] == 0){
+    if(reds[routineIndex][100][3] == 0){
+      return color(reds[100][100][a],greens[100][100][a],blues[100][100][a]);
+    } else {
+      return color(reds[routineIndex][100][a],greens[routineIndex][100][a],blues[routineIndex][100][a]);
+    }
+  } else {
+    return color(reds[routineIndex][pointIndex][a],greens[routineIndex][pointIndex][a],blues[routineIndex][pointIndex][a]);
+  }
 }
 
 void pad_duration(int a, boolean b){
@@ -30,10 +38,14 @@ void order_points(){
   float temp_procedure_time[] = new float[100];
   String temp_procedure_words[] = new String[100];
   int k = 0;
+  int newPointIndex = 0;
   
   for(int i = 0; i < duration*10; i++){
     for(int j = 0; j < points[routineIndex]; j++){
       if(round(procedure_time[routineIndex][j]*10) == i){
+        if(pointIndex == j){
+          newPointIndex = k;
+        }
         temp_procedure_time[k] = procedure_time[routineIndex][j];
         temp_procedure_words[k] = procedure_words[routineIndex][j];
         k++;
@@ -41,8 +53,21 @@ void order_points(){
     }
   }
   
+  pointIndex = newPointIndex;
   arrayCopy(temp_procedure_time,procedure_time[routineIndex]);
   arrayCopy(temp_procedure_words,procedure_words[routineIndex]);
+}
+
+void trim_points(){
+  order_points();
+  if(procedure_time[routineIndex][0] > 0){
+    float tempOff = procedure_time[routineIndex][0];
+    
+    for(int i = 0; i < points[routineIndex]; i++){
+      procedure_time[routineIndex][i]-=tempOff;
+      procedure_time[routineIndex][i] = float(round(procedure_time[routineIndex][i]*10))/10;
+    }
+  }
 }
 
 int median(int a, int b, int c){

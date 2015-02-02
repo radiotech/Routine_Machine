@@ -35,6 +35,31 @@ void update_edit_routine(){
   
   fill(get_color(0));
   
+  text(text_scale_str(width,int((height/5-height/25*1.5)),height/25*2,"Edit Events"),width/2,height/5*4+(height/5-height/25*1.5)/2);
+  
+  fill(get_color(2));
+  noStroke();
+  rect(2,2,width-5,height/5-2);
+  
+  noFill();
+  strokeWeight(height/50);
+  stroke(get_color(1));
+  rect(-1,-1,width+2,height+2);
+  strokeWeight(line);
+  
+  noFill();
+  stroke(get_color(0));
+  rect(2,2,width-5,height-5);
+  
+  fill(get_color(2));
+  rect(2,2,width-5,height/5-2);
+  
+  line(3,height/5,width-4,height/5);
+  //line(3,height-height/25*2,width-4,height-height/25*2);
+  
+  fill(get_color(0));
+  text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]),width/2,height/10);
+  
   text_group[0] = "Routine Name";
   text_group[1] = "Routine Alarm";
   text_group[2] = "Routine Color";
@@ -93,33 +118,11 @@ void update_edit_routine(){
     }
   }
   
-  text(text_scale_str(width,int((height/5-height/25*1.5)),height/25*2,"Edit Events"),width/2,height/5*4+(height/5-height/25*1.5)/2);
   
-  fill(get_color(2));
-  noStroke();
-  rect(2,2,width-5,height/5-2);
-  
-  noFill();
-  strokeWeight(height/50);
-  stroke(get_color(1));
-  rect(-1,-1,width+2,height+2);
-  strokeWeight(line);
-  
-  noFill();
-  stroke(get_color(0));
-  rect(2,2,width-5,height-5);
-  
-  fill(get_color(2));
-  rect(2,2,width-5,height/5-2);
-  
-  line(3,height/5,width-4,height/5);
-  //line(3,height-height/25*2,width-4,height-height/25*2);
-  
-  fill(get_color(0));
-  text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]),width/2,height/10);
   
   if(valid_click == 2){
     if(mouseY>height/5*4){
+      valid_click = 0;
       unset_edit_routine();
       set_edit_point(0);
     }
@@ -173,6 +176,27 @@ void update_edit_point(){
   line(width/4*3,height/5,width/4*3,height/2);
   
   
+  fill(get_color(2));
+  noStroke();
+  rect(2,2,width-5,height/5-2);
+  
+  noFill();
+  strokeWeight(height/50);
+  stroke(get_color(1));
+  rect(-1,-1,width+2,height+2);
+  strokeWeight(line);
+  
+  noFill();
+  stroke(get_color(0));
+  rect(2,2,width-5,height-5);
+  
+  fill(get_color(2));
+  rect(2,2,width-5,height/5-2);
+  
+  line(3,height/5,width-4,height/5);
+  
+  fill(get_color(0));
+  text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]+" Points"),width/2,height/10);
   
   fill(get_color(0));
   
@@ -263,6 +287,7 @@ void update_edit_point(){
     }
     if(valid_click == 2){
       if(mouseY>height/2){
+        valid_click = 0;
         switch(point_tool){
           case 0:
           
@@ -293,25 +318,5 @@ void update_edit_point(){
   text("",width/8*5,height/5+(height-height/5-height/2)/4*3);
   text("Back",width/8*7,height/5+(height-height/5-height/2)/4*3);
   */
-  fill(get_color(2));
-  noStroke();
-  rect(2,2,width-5,height/5-2);
-  
-  noFill();
-  strokeWeight(height/50);
-  stroke(get_color(1));
-  rect(-1,-1,width+2,height+2);
-  strokeWeight(line);
-  
-  noFill();
-  stroke(get_color(0));
-  rect(2,2,width-5,height-5);
-  
-  fill(get_color(2));
-  rect(2,2,width-5,height/5-2);
-  
-  line(3,height/5,width-4,height/5);
-  
-  fill(get_color(0));
-  text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]+" Points"),width/2,height/10);
+
 }

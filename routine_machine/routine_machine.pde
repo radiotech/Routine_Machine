@@ -1,7 +1,7 @@
 PFont font;
 int line;
 
-int reds[][][] = new int[101][101][3];//{9,0,0};
+int reds[][][] = new int[101][101][4];//{9,0,0};
 int greens[][][] = new int[101][101][3];//{9,0,0};
 int blues[][][] = new int[101][101][3];//{9,0,9};
 int color_part = 0;
@@ -39,6 +39,7 @@ void setup(){
       reds[i][j][0] = 9;
       reds[i][j][1] = 0;
       reds[i][j][2] = 0;
+      reds[i][j][3] = 0;
       greens[i][j][0] = 9;
       greens[i][j][1] = 0;
       greens[i][j][2] = 0;
