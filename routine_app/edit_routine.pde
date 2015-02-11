@@ -198,8 +198,6 @@ void update_edit_point(){
   fill(get_color(0));
   text(text_scale_str(width,height/5,height/25,"Edit "+procedures[routineIndex]+" Points"),width/2,height/10);
   
-  fill(get_color(0));
-  
   text_group[0] = "Select";
   text_group[1] = "Move";
   text_group[2] = "Strech";
@@ -267,10 +265,11 @@ void update_edit_point(){
         point_tool = 3;
       break;
       case 4:
-        println("5");
+        unset_edit_point();
+        set_menu(8);
       break;
       case 5:
-        println("6");
+        remove_point(pointIndex,point_mode);
       break;
       case 6:
         if(point_mode == 0){
@@ -290,18 +289,32 @@ void update_edit_point(){
         valid_click = 0;
         switch(point_tool){
           case 0:
-          
+          select_point(bigline_to_time(mouseX,mouseY),point_mode);
           break;
           case 1:
+          //select_point(bigline_to_time(mouseX,mouseY),0);
           
           break;
           case 2:
+          select_point(bigline_to_time(mouseX,mouseY),0);
           
           break;
           case 3:
           add_point(bigline_to_time(mouseX,mouseY));
           unset_edit_point();
           set_menu(8);
+          break;
+        }
+      }
+    }
+  }
+  if(mousePressed){
+    if(valid_click != -1){
+      if(mouseY>height/2){
+        switch(point_tool){
+          case 1:
+          procedure_time[routineIndex][pointIndex] = clean_time(bigline_to_time(mouseX,mouseY));
+          trim_points();
           break;
         }
       }

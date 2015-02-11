@@ -129,6 +129,22 @@ void mousePressed(){
     }
   }
   
+  if(show_edit_point){
+    if(point_tool == 1){
+      if(mouseY>height/2){
+        if(select_point(bigline_to_time(mouseX,mouseY),0)){
+          if(pointIndex == 0){
+            valid_click = -1;
+            println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          }
+        } else {
+          valid_click = -1;
+          println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+      }
+    }
+  }
+  
 }
 
 void mouseReleased(){

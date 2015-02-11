@@ -36,17 +36,29 @@ void update_timeline(){
     }
     
     float[][] tempPos = new float[3][2]; 
-    tempPos[2][0] = 0;
-    tempPos[2][1] = 0;
+    tempPos[2][0] = width;
+    tempPos[2][1] = -2;
     for(int i = 0; i < points[routineIndex]; i++){
       if(i+1 <= points[routineIndex]){
         tempPos[0] = time_to_bigline(procedure_time[routineIndex][i+1]);
       } else {
-        tempPos[0][0] = 0;
-        tempPos[0][1] = 0;
+        tempPos[0][0] = width;
+        tempPos[0][1] = -1;
       }
       if(i == 0){
         tempPos[1] = time_to_bigline(procedure_time[routineIndex][i]);
+        
+        /*
+        
+        println(tempPos[0]);
+        println(tempPos[1]);
+        println(tempPos[2]);
+        */
+        //println(points[routineIndex]);
+      }
+      if(points[routineIndex] == 1){
+        tempPos[0][0] = width;
+        tempPos[0][1] = -1;
       }
       
       //stroke(5);
@@ -56,17 +68,54 @@ void update_timeline(){
         minWidth = abs(tempPos[2][0] - tempPos[1][0])/2;
       }
       if(tempPos[0][1] == tempPos[1][1]){
-        if(abs(tempPos[0][0] - tempPos[1][0])/2 < minWidth){
-          minWidth = abs(tempPos[0][0] - tempPos[1][0])/2;
-        }
+        minWidth = min(abs(tempPos[0][0] - tempPos[1][0])/2,minWidth);
       }
       //line(tempPos[1][0]-minWidth,tempPos[1][1]+10,tempPos[1][0]+minWidth,tempPos[1][1]+10);
+      
+      
+      if(point_mode == 0){
+        
+        noStroke();
+        fill(get_color(0));
+        if(pointIndex == i){
+          fill(get_color(2));
+        }
+        
+        ellipse(tempPos[1][0],tempPos[1][1],height/50,height/50);
+        
+      } else {
+        
+        noFill();
+        strokeWeight(max(height/500,1));
+        stroke(get_color(0));
+        if(pointIndex == i){
+          stroke(get_color(2));
+        }
+        
+        float tempX = tempPos[1][0];
+        float tempY = tempPos[1][1];
+        tempY -= height/2+height/6;
+        for(int k = 0; k < 3; k++){
+          if(tempY > 0){
+            tempY -= height/6;
+            tempX+= width;
+          }
+        }
+        if(points[routineIndex]>i+1){
+          tempY = raw_time_to_bigline(procedure_time[routineIndex][i+1]-procedure_time[routineIndex][i]);
+        } else {
+          tempY = raw_time_to_bigline(duration-procedure_time[routineIndex][i]);
+        }
+        rect(tempX,height/2+height/6-height/25*1.5-height/50,tempY,height/25);
+        rect(tempX-width,height/2+height/6-height/25*1.5-height/50+height/6,tempY,height/25);
+        rect(tempX-width*2,height/2+height/6-height/25*1.5-height/50+height/6*2,tempY,height/25);
+      }
       
       fill(get_color(0));
       if(pointIndex == i){
         fill(get_color(2));
       }
-      text(text_scale_str(floor(minWidth)*2,int((height/25)*1.5),(height/100),procedure_words[routineIndex][i]+i),tempPos[1][0],tempPos[1][1]-(height/6-(height/25))/2);
+      text(text_scale_str(floor(minWidth)*2,int((height/25)*1.5),(height/100),procedure_words[routineIndex][i]+i),median(round(tempPos[1][0]),round(textWidth(procedure_words[routineIndex][i])/2+height/25),round(width-textWidth(procedure_words[routineIndex][i])/2+height/25)),tempPos[1][1]-(height/6-(height/25))/2);
       tempPos[2] = tempPos[1];
       tempPos[1] = tempPos[0];
     }
@@ -104,13 +153,14 @@ void update_timeline(){
   }
 }
 
-int bigline_to_time(int a, int b){
-  float temp_x;
-  float temp_y;
-  
+float bigline_to_time(float a, float b){
   b-=height/2;
   b/=(height/2)/3;
-  return median(0,round((floor(b)*width+a-(height/25*1.5))*float(duration)/(width*3-height/25*3)),duration);
+  return median(0,(floor(b)*width+a-(height/25*1.5))*float(duration)/(width*3-height/25*3),duration);
+}
+
+float raw_bigline_to_time(float a){
+  return median(0,a*float(duration)/(width*3-height/25*3),duration);
 }
 
 float[] time_to_bigline(float a){
@@ -130,4 +180,12 @@ float[] time_to_bigline(float a){
   temp[0] = temp_x; 
   temp[1] = temp_y;
   return temp;
+}
+
+float raw_time_to_bigline(float a){
+  return a * (width*3-(height/25)*3) / duration;
+}
+
+float clean_time(float a){
+  return float(round(a*10))/10;
 }

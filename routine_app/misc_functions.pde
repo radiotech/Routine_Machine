@@ -1,9 +1,9 @@
 void next(){
-  marker = ceil(60*time[median(lastPoint(marker)+1,0,times-1)]);
+  marker = ceil(60*time[round(median(lastPoint(marker)+1,0,times-1))]);
 }
 
 void back(){
-  marker = ceil(60*time[median(lastPoint(marker-10),0,times-1)]);
+  marker = ceil(60*time[round(median(lastPoint(marker-10),0,times-1))]);
 }
 
 color get_color(int a){
@@ -58,6 +58,52 @@ void order_points(){
   arrayCopy(temp_procedure_words,procedure_words[routineIndex]);
 }
 
+/*
+void order_points_on_the_thing_with_the_lines_and_the_rainbow_flying_cat(){
+░░float temp_procedure_time[] = new float[100];
+░░String temp_procedure_words[] = new String[100];
+░░int k = 0;
+░░int newPointIndex = 0;
+░░newPointIndex = k;
+░░int text_click(){
+░░int my_return = -1;
+░░for(int i = 0; i < duration*10; i++){
+░░░░░░for(int j = 0; j < points[routineIndex]; j++){
+░░░░░░░░░░if(round(procedure_time[routineIndex][j]*10) == i){
+░░░░░░░░░░░░░░if(pointIndex == j){
+░░░░░░░░░░░░░░░░░░for(int i = 0; i < text_group_length; i++){
+░░░░░░░░░░░░░░░░░░░░░░if(abs(mouseX-text_group_x[i])<text_group_w[i]/2){
+░░░░░░░░░░░░░░░░░░░░░░░░░░if(abs(mouseY-text_group_y[i])<text_group_h[i]/2){
+░░░░░░░░░░▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄for(int k = points[routineIndex]-1; k >= 0; k--){
+░░░░░░░░▄▀░░░░░░░░░░░░▄░░░░░░░▀▄░░if(procedure_time[routineIndex][k] > a){
+░░░░░░░░█░░▄░░░░▄░░░░░░░░░░░░░░█░░░░░░if(slider_pos < (-(button_height)*(menus[menuIndex])+float((height*4/5)))){
+░░░░░░░░█░░░░░░░░░░░░▄█▄▄░░▄░░░█░▄▄▄░░░░░░if(marker<duration*60){
+░▄▄▄▄▄░░█░░░░░░▀░░░░▀█░░▀▄░░░░░█▀▀░██░░░░░░░░░if(marker>duration*2){
+░██▄▀██▄█░░░▄░░░░░░░██░░░░▀▀▀▀▀░░░░██░░░░░░░░░░░░░if(cat_h_speed>0){
+░░▀██▄▀██░░░░░░░░▀░██▀░░░░░░░░░░░░░▀██░░░░░░░░░░░░░░░░cat_x++;
+░░░░▀████░▀░░░░▄░░░██░░░▄█░░░░▄░▄█░░██░░░░░░░░░░░░}
+░░░░░░░▀█░░░░▄░░░░░██░░░░▄░░░▄░░▄░░░██░░░░░░░░}
+░░░░░░░▄█▄░░░░░░░░░░░▀▄░░▀▀▀▀▀▀▀▀░░▄▀░░░░░}
+░░░░░░█▀▀█████████▀▀▀▀████████████▀░░░}
+░░░░░░████▀░░███▀░░░░░░▀███░░▀██▀░}
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░}                         
+░░░░░░░░░░░░░░░░░░░░░░░░░░}
+░░░░░░░░░░░░░░░░░░░░░░}
+░░░░░░░░░░░░░░░░░░}
+░░░░░░░░░░░░░░}
+░░░░░░░░░░}
+░░░░░░}
+  }
+  temp_procedure_time[k] = procedure_time[routineIndex][j];
+  temp_procedure_words[k] = procedure_words[routineIndex][j];
+  k++;
+  
+  pointIndex = newPointIndex;
+  arrayCopy(temp_procedure_time,procedure_time[routineIndex]);
+  arrayCopy(temp_procedure_words,procedure_words[routineIndex]);
+}
+*/
+
 void trim_points(){
   order_points();
   if(procedure_time[routineIndex][0] > 0){
@@ -65,12 +111,12 @@ void trim_points(){
     
     for(int i = 0; i < points[routineIndex]; i++){
       procedure_time[routineIndex][i]-=tempOff;
-      procedure_time[routineIndex][i] = float(round(procedure_time[routineIndex][i]*10))/10;
+      //procedure_time[routineIndex][i] = float(round(procedure_time[routineIndex][i]*10))/10;
     }
   }
 }
 
-int median(int a, int b, int c){
+float median(float a, float b, float c){
   if(a>=b && a>=c){
     if(b>=c){
       return b;

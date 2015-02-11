@@ -463,32 +463,33 @@ void menu_click(int a, int b){
       case 9:
         switch(b){
           case 0:
-            procedure_time[routineIndex][pointIndex]+=10;
+            procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]+10);
             set_menu(9);
           break;
           case 1:
-            procedure_time[routineIndex][pointIndex]+=1;
-            set_menu(9);
-          break;
-          case 2:
-            procedure_time[routineIndex][pointIndex]=float(round((procedure_time[routineIndex][pointIndex]+.1)*10))/10;
-            
-            set_menu(9);
-          break;
-          case 3:
-            procedure_time[routineIndex][pointIndex]=float(round((procedure_time[routineIndex][pointIndex]-.1)*10))/10;
-            
-            set_menu(9);
-          break;
-          case 4:
-            procedure_time[routineIndex][pointIndex]-=1;
+            procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]-10);
             if(procedure_time[routineIndex][pointIndex] < 0){
               procedure_time[routineIndex][pointIndex] = 0;
             }
             set_menu(9);
           break;
+          case 2:
+            procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]+1);
+            set_menu(9);
+          break;
+          case 3:
+            procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]-1);
+            if(procedure_time[routineIndex][pointIndex] < 0){
+              procedure_time[routineIndex][pointIndex] = 0;
+            }
+            set_menu(9);
+          break;
+          case 4:
+            procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]+.1);
+            set_menu(9);
+          break;
           case 5:
-            procedure_time[routineIndex][pointIndex]-=10;
+            procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]-.1);
             if(procedure_time[routineIndex][pointIndex] < 0){
               procedure_time[routineIndex][pointIndex] = 0;
             }
@@ -498,12 +499,13 @@ void menu_click(int a, int b){
             set_menu(8);
           break;
         }
-        procedure_time[routineIndex][pointIndex]=float(round((procedure_time[routineIndex][pointIndex])*10))/10;
+        procedure_time[routineIndex][pointIndex]=clean_time(procedure_time[routineIndex][pointIndex]);
         if(procedure_time[routineIndex][pointIndex] < 0){
           procedure_time[routineIndex][pointIndex] = 0;
         }
-        
+        trim_points();
       break;
     }
   }
 }
+
