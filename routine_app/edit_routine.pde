@@ -293,7 +293,7 @@ void update_edit_point(){
           break;
           case 1:
           //select_point(bigline_to_time(mouseX,mouseY),0);
-          
+          arrayCopy(procedure_time[routineIndex],last_procedure_time);
           break;
           case 2:
           select_point(bigline_to_time(mouseX,mouseY),0);
@@ -313,8 +313,35 @@ void update_edit_point(){
       if(mouseY>height/2){
         switch(point_tool){
           case 1:
-          procedure_time[routineIndex][pointIndex] = clean_time(bigline_to_time(mouseX,mouseY));
-          trim_points();
+          if(point_mode == 0){
+            procedure_time[routineIndex][pointIndex] = clean_time(bigline_to_time(mouseX,mouseY));
+            trim_points();
+          } else {
+            arrayCopy(last_procedure_time,procedure_time[routineIndex]);
+            move_block();
+            
+            //if(pointIndex<points[routineIndex]-1){
+              
+              
+              
+              //if(bigline_to_time(mouseX,mouseY) > procedure_time[routineIndex][pointIndex+1]){
+                
+                //last_procedure_time[pointIndex] = clean_time(bigline_to_time(mouseX,mouseY));
+                
+                
+                
+                //trim_points();
+              //}
+              
+              
+              
+              
+              //
+              
+              
+              
+            //}
+          }
           break;
         }
       }

@@ -90,7 +90,9 @@ void draw(){
   
   if(mousePressed){
     if(sqrt(pow(mouseX-click_x,2)+pow(mouseY-click_y,2))>height/40){
-      valid_click = 0;
+      if(valid_click == 1){
+        valid_click = 0;
+      }
     }
   } else {
     if(valid_click == 2){
@@ -132,11 +134,17 @@ void mousePressed(){
   if(show_edit_point){
     if(point_tool == 1){
       if(mouseY>height/2){
-        if(select_point(bigline_to_time(mouseX,mouseY),0)){
-          if(pointIndex == 0){
-            valid_click = -1;
-            println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if(select_point(bigline_to_time(mouseX,mouseY),point_mode)){
+          if(point_mode == 0){
+            if(pointIndex == 0){
+              valid_click = -1;
+              println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+          } else {
+            arrayCopy(procedure_time[routineIndex],last_procedure_time);
           }
+          
+          
         } else {
           valid_click = -1;
           println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

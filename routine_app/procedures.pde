@@ -1,5 +1,6 @@
 String procedures[];
 float procedure_time[][];
+float last_procedure_time[] = new float[100];
 String procedure_words[][];
 int times;
 
@@ -33,18 +34,33 @@ void add_point(float a){
   edit_point(pointIndex);
 }
 
+void remove_block(int a){
+  if(a < points[routineIndex]-1){
+    float tempDur = procedure_time[routineIndex][a]-procedure_time[routineIndex][a+1];
+    for(int i = 0; i < points[routineIndex]; i++){
+      if(i > a){
+        procedure_time[routineIndex][i] += tempDur;
+      }
+    }
+  }
+}
+
+void add_block(int a, float b){
+  if(a < points[routineIndex]-1){
+    float tempDur = b;
+    for(int i = 0; i < points[routineIndex]; i++){
+      if(i >= a){
+        procedure_time[routineIndex][i] += tempDur;
+      }
+    }
+  }
+}
+
 void remove_point(int a, int b){
   order_points();
   
   if(b == 1){
-    if(a < points[routineIndex]-1){
-      float tempDur = procedure_time[routineIndex][a]-procedure_time[routineIndex][a+1];
-      for(int i = 0; i < points[routineIndex]; i++){
-        if(i > a){
-          procedure_time[routineIndex][i] += tempDur;
-        }
-      }
-    }
+    remove_block(a);
   }
   
   procedure_time[routineIndex][a] = procedure_time[routineIndex][points[routineIndex]-1]+1;
@@ -54,6 +70,31 @@ void remove_point(int a, int b){
     pointIndex = 0;
   }
   trim_points();
+}
+
+void move_block(){
+  if(points[routineIndex]>0){
+    int newPos = block_pos(bigline_to_time(mouseX,mouseY));
+    
+    if(newPos != pointIndex){
+      float blockDur = procedure_time[routineIndex][pointIndex];
+      
+      remove_block(pointIndex);
+      
+      
+      procedure_time[routineIndex][pointIndex] = procedure_time[routineIndex][points[routineIndex]-1]+1;
+      
+      order_points();
+      points[routineIndex]--;
+      
+      procedure_time[routineIndex][points[routineIndex]] = procedure_time[routineIndex][newPos]+1;
+      add_block(newPos,blockDur);
+      //points[routineIndex]++;
+      order_points();
+      */
+      
+    }
+  }
 }
 
 boolean select_point(float a, int b){  
@@ -84,6 +125,54 @@ boolean select_point(float a, int b){
   } else {
     return false;
   }
+}
+
+int block_pos(float a){  
+  int tempReturn;
+  tempReturn = points[routineIndex];
+  if(points[routineIndex]>0){
+    if(procedure_time[routineIndex][points[routineIndex]-1] > a){
+      for(int k = points[routineIndex]-1; k >= 0; k--){
+        if(procedure_time[routineIndex][k] > a){
+          if(k>0){  
+            //println(a-procedure_time[routineIndex][k-1]);
+            if(a-procedure_time[routineIndex][k-1]>(procedure_time[routineIndex][k]-procedure_time[routineIndex][k-1])/2){
+              tempReturn = k+1;
+            } else {
+              tempReturn = k;
+            }
+          } else {
+            if(a>(procedure_time[routineIndex][0])/2){
+              tempReturn = 1;
+            } else {
+              tempReturn = 0;
+            }
+          }
+        }
+      }
+    } else {
+      if(a-procedure_time[routineIndex][points[routineIndex]-1]>(duration-procedure_time[routineIndex][points[routineIndex]-1])/2){
+        tempReturn = points[routineIndex]+1;
+      } else {
+        tempReturn = points[routineIndex];
+      }
+    }
+  }
+  //if(a > )
+  
+  if(tempReturn > 0){
+    tempReturn--;
+  }
+  
+  if(tempReturn > 0){
+    if(tempReturn > pointIndex){
+      tempReturn--;
+    }
+  }
+  
+  println(tempReturn);
+  
+  return tempReturn;
 }
 
 void edit_point(int a){
